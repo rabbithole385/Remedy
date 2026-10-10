@@ -1,12 +1,14 @@
 <?php
 // ============================================================
 // Remedy Investment — Database Connection Handler (PDO)
+// Auto-detects & auto-seeds database on first run
 // ============================================================
 
 require_once __DIR__ . '/config.php';
 
 class DB {
     private static ?PDO $instance = null;
+    private static bool $checkedMigration = false;
 
     public static function getConnection(): ?PDO {
         if (self::$instance === null) {
@@ -20,11 +22,35 @@ class DB {
             try {
                 self::$instance = new PDO($dsn, DB_USER, DB_PASS, $options);
             } catch (PDOException $e) {
-                if (APP_DEBUG) {
-                    // Log error or save note
-                    error_log("Database connection error: " . $e->getMessage());
+                // If database does not exist, try to create it if possible
+                try {
+                    $rootDsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";charset=" . DB_CHARSET;
+                    $tempPdo = new PDO($rootDsn, DB_USER, DB_PASS, $options);
+                    $tempPdo->exec("CREATE DATABASE IF NOT EXISTS `" . DB_NAME . "` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
+                    self::$instance = new PDO($dsn, DB_USER, DB_PASS, $options);
+                } catch (Exception $inner) {
+                    if (APP_DEBUG) {
+                        error_log("Database connection error: " . $e->getMessage());
+                    }
+                    return null;
                 }
-                return null;
+            }
+        }
+
+        // Auto-run schema migration if tables don't exist yet (Zero-stress deployment!)
+        if (self::$instance !== null && !self::$checkedMigration) {
+            self::$checkedMigration = true;
+            try {
+                $stmt = self::$instance->query("SHOW TABLES LIKE 'users'");
+                if ($stmt && $stmt->rowCount() === 0) {
+                    $schemaFile = __DIR__ . '/../../database/schema.sql';
+                    if (file_exists($schemaFile)) {
+                        $sql = file_get_contents($schemaFile);
+                        self::$instance->exec($sql);
+                    }
+                }
+            } catch (Exception $e) {
+                error_log("Schema auto-migration check: " . $e->getMessage());
             }
         }
 

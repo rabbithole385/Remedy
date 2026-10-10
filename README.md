@@ -2,7 +2,27 @@
 
 A full-stack PHP 8 & MySQL web application replicated from the reference specification at `https://task.sbrbot.sbs/login`.
 
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template)
+
 ---
+
+## ⚡ Zero-Stress 1-Click Railway Deployment
+
+This project is pre-configured for automated Railway deployment:
+- **Auto-Configuring Port:** Dynamic `$PORT` detection for Railway.
+- **Auto-Detecting MySQL:** Automatically recognizes Railway's `MYSQL_URL` / `MYSQLHOST` environment variables.
+- **Auto-Seeding Database:** Automatically executes `database/schema.sql` on first boot (no manual SQL importing needed!).
+- **GitHub Auto-Deploy:** Every push to this repository automatically triggers a Railway build and deployment.
+
+### How to Deploy on Railway:
+1. Open [railway.app](https://railway.app) and click **"New Project"**.
+2. Select **"Deploy from GitHub repo"** and choose `rabbithole385/Remedy`.
+3. In the project canvas, click **"Add a Service"** &rarr; **"Database"** &rarr; **"Add MySQL"**.
+4. Railway will automatically link MySQL and spin up the container!
+5. In your web service settings, click **"Generate Domain"** under **Networking**.
+
+> **Note:** If Railway prompts that your trial is expired, upgrade to the Hobby plan ($5/mo) in your [Railway Account Settings](https://railway.app/account) to unblock service creation.
+
 
 ## 🚀 Key Features
 
