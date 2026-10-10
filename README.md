@@ -16,7 +16,7 @@ This project is pre-configured for automated Railway deployment:
 
 ### How to Deploy on Railway:
 1. Open [railway.app](https://railway.app) and click **"New Project"**.
-2. Select **"Deploy from GitHub repo"** and choose `barrybarryb71/remedy`.
+2. Select **"Deploy from GitHub repo"** and choose `rabbithole385/Remedy`.
 3. In the project canvas, click **"Add a Service"** &rarr; **"Database"** &rarr; **"Add MySQL"**.
 4. Railway will automatically link MySQL and spin up the container!
 5. In your web service settings, click **"Generate Domain"** under **Networking**.
