@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create Account | Remedy Investment</title>
+    <meta name="description" content="Create your Remedy Investment account">
+    <meta name="theme-color" content="#0ea5e9">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: { DEFAULT: '#0ea5e9', 400: '#38bdf8', 500: '#0ea5e9', 600: '#0284c7', 700: '#0369a1' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <script>
+        (function () {
+            var saved = localStorage.getItem('ud_theme');
+            var isDark = saved !== null ? saved === 'dark' : true;
+            if (isDark) document.documentElement.classList.add('dark');
+            else document.documentElement.classList.remove('dark');
+        })();
+    </script>
+
+    <style>
+        [x-cloak] { display: none !important; }
+        body { font-family: 'Inter', sans-serif; }
+
+        .orb {
+            position: absolute; border-radius: 50%; filter: blur(80px);
+            opacity: 0.12; animation: float 8s ease-in-out infinite;
+        }
+        .orb-1 { width: 400px; height: 400px; background: #0ea5e9; top: -100px; right: -100px; animation-delay: 0s; }
+        .orb-2 { width: 300px; height: 300px; background: #38bdf8; bottom: -50px; left: -50px; animation-delay: -3s; }
+        .orb-3 { width: 200px; height: 200px; background: #7c3aed; top: 40%; right: 20%; animation-delay: -5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); }
+        }
+
+        .input-glow:focus { box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15); }
+
+        .card-glass {
+            background: rgba(24, 24, 27, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+        html:not(.dark) .card-glass {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .btn-brand {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            transition: all 0.2s ease;
+        }
+        .btn-brand:hover {
+            background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.35);
+        }
+        .btn-brand:active { transform: translateY(0); }
+
+        .divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(113,113,122,0.3), transparent); }
+
+        /* Strength bar */
+        .strength-bar { height: 3px; border-radius: 2px; transition: all 0.3s ease; }
+    </style>
+</head>
+
+<body class="bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 antialiased min-h-screen"
+      x-data="registerPage()">
+
+    <!-- Background -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- HEADER -->
+    <header class="fixed top-0 inset-x-0 z-20 flex items-center justify-between px-5 py-3 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-sm border-b border-zinc-200 dark:border-zinc-800">
+        <a href="login.html" class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-sky-500 to-sky-700 flex items-center justify-center shadow-md">
+                <i data-lucide="trending-up" class="w-4 h-4 text-white"></i>
+            </div>
+            <span class="font-bold text-sm text-zinc-800 dark:text-zinc-100 tracking-tight">Remedy <span class="text-sky-500">Investment</span></span>
+        </a>
+
+        <div class="flex items-center gap-2">
+            <button @click="toggleTheme()"
+                class="p-2 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors">
+                <i data-lucide="sun" class="w-4 h-4" x-show="isDark" x-cloak></i>
+                <i data-lucide="moon" class="w-4 h-4" x-show="!isDark" x-cloak></i>
+            </button>
+            <a href="login.html" class="text-xs font-medium px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white transition-colors">Sign In</a>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="min-h-screen flex items-center justify-center px-4 pt-20 pb-8 relative z-10">
+        <div class="w-full max-w-md">
+            <div class="card-glass rounded-2xl p-8 shadow-2xl shadow-black/20 dark:shadow-black/40">
+
+                <!-- Header -->
+                <div class="text-center mb-7">
+                    <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-500 to-sky-700 shadow-lg shadow-sky-500/30 mb-4">
+                        <i data-lucide="user-plus" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <h1 class="text-xl font-bold text-zinc-900 dark:text-zinc-50">Create your account</h1>
+                    <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">Join Remedy Investment today</p>
+                </div>
+
+                <!-- Form -->
+                <form action="#" method="POST" @submit.prevent="handleRegister()">
+
+                    <!-- Name row -->
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <div>
+                            <label for="first_name" class="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1.5">First name</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i data-lucide="user" class="w-4 h-4 text-zinc-400"></i>
+                                </div>
+                                <input type="text" id="first_name" name="first_name" required autocomplete="given-name"
+                                    placeholder="John"
+                                    class="input-glow w-full pl-10 pr-3 py-2.5 text-sm rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-sky-500 transition-colors">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="last_name" class="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1.5">Last name</label>
+                            <input type="text" id="last_name" name="last_name" required autocomplete="family-name"
+                                placeholder="Doe"
+                                class="input-glow w-full px-3 py-2.5 text-sm rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-sky-500 transition-colors">
+                        </div>
+                    </div>
+
+                    <!-- Username -->
+                    <div class="mb-4">
+                        <label for="username" class="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1.5">Username</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i data-lucide="at-sign" class="w-4 h-4 text-zinc-400"></i>
+                            </div>
+                            <input type="text" id="username" name="username" required autocomplete="username"
+                                placeholder="johndoe"
+                                class="input-glow w-full pl-10 pr-4 py-2.5 text-sm rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-sky-500 transition-colors">
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-4">
+                        <label for="email" class="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1.5">Email address</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i data-lucide="mail" class="w-4 h-4 text-zinc-400"></i>
+                            </div>
+                            <input type="email" id="email" name="email" required autocomplete="email"
+                                placeholder="you@example.com"
+                                class="input-glow w-full pl-10 pr-4 py-2.5 text-sm rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-sky-500 transition-colors">
+                        </div>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="mb-4">
+                        <label for="phone" class="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1.5">Phone number</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i data-lucide="phone" class="w-4 h-4 text-zinc-400"></i>
+                            </div>
+                            <input type="tel" id="phone" name="phone" autocomplete="tel"
+                                placeholder="+1 234 567 8900"
+                                class="input-glow w-full pl-10 pr-4 py-2.5 text-sm rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-sky-500 transition-colors">
+                        </div>
+                    </div>
+
+                    <!-- Referral -->
+                    <div class="mb-4">
+                        <label for="referral" class="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1.5">
+                            Referral code <span class="text-zinc-400 font-normal">(optional)</span>
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i data-lucide="gift" class="w-4 h-4 text-zinc-400"></i>
+                            </div>
+                            <input type="text" id="referral" name="referral"
+                                placeholder="Enter referral code"
+                                class="input-glow w-full pl-10 pr-4 py-2.5 text-sm rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-sky-500 transition-colors">
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="mb-4">
+                        <label for="password" class="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1.5">Password</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i data-lucide="lock" class="w-4 h-4 text-zinc-400"></i>
+                            </div>
+                            <input :type="showPassword ? 'text' : 'password'" id="password" name="password" required
+                                placeholder="••••••••" @input="checkStrength($event.target.value)"
+                                class="input-glow w-full pl-10 pr-10 py-2.5 text-sm rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-sky-500 transition-colors">
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                <button type="button" @click="showPassword = !showPassword" class="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors">
+                                    <i data-lucide="eye" class="w-4 h-4" x-show="!showPassword"></i>
+                                    <i data-lucide="eye-off" class="w-4 h-4" x-show="showPassword" x-cloak></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Strength indicator -->
+                        <div class="flex gap-1 mt-2" x-show="passwordStrength > 0" x-cloak>
+                            <div class="strength-bar flex-1" :class="passwordStrength >= 1 ? (passwordStrength >= 3 ? 'bg-green-500' : passwordStrength === 2 ? 'bg-yellow-500' : 'bg-red-500') : 'bg-zinc-200 dark:bg-zinc-700'"></div>
+                            <div class="strength-bar flex-1" :class="passwordStrength >= 2 ? (passwordStrength >= 3 ? 'bg-green-500' : 'bg-yellow-500') : 'bg-zinc-200 dark:bg-zinc-700'"></div>
+                            <div class="strength-bar flex-1" :class="passwordStrength >= 3 ? 'bg-green-500' : 'bg-zinc-200 dark:bg-zinc-700'"></div>
+                            <div class="strength-bar flex-1" :class="passwordStrength >= 4 ? 'bg-green-500' : 'bg-zinc-200 dark:bg-zinc-700'"></div>
+                        </div>
+                        <p class="text-xs mt-1" x-show="passwordStrength > 0" x-cloak
+                            :class="passwordStrength >= 3 ? 'text-green-500' : passwordStrength === 2 ? 'text-yellow-500' : 'text-red-500'"
+                            x-text="strengthLabels[passwordStrength - 1]"></p>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="mb-5">
+                        <label for="password_confirm" class="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1.5">Confirm password</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i data-lucide="shield-check" class="w-4 h-4 text-zinc-400"></i>
+                            </div>
+                            <input :type="showConfirm ? 'text' : 'password'" id="password_confirm" name="password_confirmation" required
+                                placeholder="••••••••"
+                                class="input-glow w-full pl-10 pr-10 py-2.5 text-sm rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-sky-500 transition-colors">
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                <button type="button" @click="showConfirm = !showConfirm" class="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors">
+                                    <i data-lucide="eye" class="w-4 h-4" x-show="!showConfirm"></i>
+                                    <i data-lucide="eye-off" class="w-4 h-4" x-show="showConfirm" x-cloak></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Terms -->
+                    <div class="flex items-start gap-2 mb-5">
+                        <input type="checkbox" id="terms" name="terms" required
+                            class="w-4 h-4 mt-0.5 rounded border-zinc-300 dark:border-zinc-600 bg-zinc-100 dark:bg-zinc-800 text-sky-600 focus:ring-sky-500 focus:ring-2 cursor-pointer">
+                        <label for="terms" class="text-xs text-zinc-500 dark:text-zinc-400 cursor-pointer select-none leading-relaxed">
+                            I agree to the <a href="#" class="text-sky-500 hover:underline">Terms of Service</a> and <a href="#" class="text-sky-500 hover:underline">Privacy Policy</a>
+                        </label>
+                    </div>
+
+                    <!-- Submit -->
+                    <button type="submit" :disabled="isLoading"
+                        class="btn-brand w-full py-2.5 rounded-xl text-sm font-semibold text-white flex items-center justify-center gap-2">
+                        <span x-show="!isLoading">Create Account</span>
+                        <span x-show="isLoading" x-cloak class="flex items-center gap-2">
+                            <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                            </svg>
+                            Creating account…
+                        </span>
+                    </button>
+                </form>
+
+                <!-- Divider -->
+                <div class="flex items-center gap-3 my-5">
+                    <div class="divider-line"></div>
+                    <span class="text-xs text-zinc-500 whitespace-nowrap">Already have an account?</span>
+                    <div class="divider-line"></div>
+                </div>
+
+                <a href="login.html"
+                   class="block w-full py-2.5 rounded-xl text-sm font-medium text-center border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
+                    Sign In
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => lucide.createIcons());
+
+        function registerPage() {
+            return {
+                isDark: document.documentElement.classList.contains('dark'),
+                showPassword: false,
+                showConfirm: false,
+                isLoading: false,
+                passwordStrength: 0,
+                strengthLabels: ['Weak', 'Fair', 'Good', 'Strong'],
+
+                toggleTheme() {
+                    this.isDark = !this.isDark;
+                    if (this.isDark) {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('ud_theme', 'dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('ud_theme', 'light');
+                    }
+                    this.$nextTick(() => lucide.createIcons());
+                },
+
+                checkStrength(val) {
+                    let score = 0;
+                    if (val.length >= 8) score++;
+                    if (/[A-Z]/.test(val)) score++;
+                    if (/[0-9]/.test(val)) score++;
+                    if (/[^A-Za-z0-9]/.test(val)) score++;
+                    this.passwordStrength = val.length === 0 ? 0 : Math.max(1, score);
+                },
+
+                async handleRegister() {
+                    this.isLoading = true;
+                    await new Promise(r => setTimeout(r, 1400));
+                    this.isLoading = false;
+                    window.location.href = 'dashboard.html';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
