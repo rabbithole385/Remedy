@@ -1,9 +1,9 @@
 <?php
 // ============================================================
-// Remedy Investment — Application Configuration
+// Task Investment — Application Configuration
 // ============================================================
 
-define('APP_NAME',    getenv('APP_NAME') ?: 'Remedy Investment');
+define('APP_NAME',    getenv('APP_NAME') ?: 'Task Investment');
 define('APP_VERSION', '1.0.0');
 
 // ─── Dynamic APP_URL Resolution ──────────────────────────────
@@ -19,14 +19,13 @@ if (!empty($railwayDomain)) {
 }
 define('APP_URL', getenv('APP_URL') ?: $defaultAppUrl);
 
-// ─── Database Configuration (Auto-detecting Railway & MySQL) ──
+// ─── Database Configuration ──────────────────────────────────
 $dbHost = 'localhost';
 $dbPort = '3306';
 $dbName = 'remedy_db';
 $dbUser = 'root';
 $dbPass = '';
 
-// 1. Check for combined URL (Railway MYSQL_URL or DATABASE_URL)
 $dbUrl = getenv('MYSQL_URL') ?: getenv('DATABASE_URL');
 if ($dbUrl) {
     $parsed = parse_url($dbUrl);
@@ -38,7 +37,6 @@ if ($dbUrl) {
         $dbName = isset($parsed['path']) ? ltrim($parsed['path'], '/') : $dbName;
     }
 } else {
-    // 2. Check individual Railway / Docker environment variables
     $envHost = getenv('MYSQLHOST') ?: getenv('MYSQL_HOST') ?: getenv('DB_HOST');
     if ($envHost) $dbHost = $envHost;
 
@@ -63,7 +61,7 @@ define('DB_PASS',    $dbPass);
 define('DB_CHARSET', 'utf8mb4');
 
 // ─── Session ────────────────────────────────────────────────
-define('SESSION_NAME',     'remedy_sess');
+define('SESSION_NAME',     'task_sess');
 define('SESSION_LIFETIME', 60 * 60 * 24 * 7); // 7 days
 
 // ─── Security ───────────────────────────────────────────────
@@ -81,7 +79,7 @@ define('MAIL_HOST',       getenv('MAIL_HOST') ?: 'smtp.mailtrap.io');
 define('MAIL_PORT',       (int)(getenv('MAIL_PORT') ?: 587));
 define('MAIL_USER',       getenv('MAIL_USER') ?: '');
 define('MAIL_PASS',       getenv('MAIL_PASS') ?: '');
-define('MAIL_FROM',       getenv('MAIL_FROM') ?: 'noreply@remedyinvestment.com');
+define('MAIL_FROM',       getenv('MAIL_FROM') ?: 'noreply@taskinvestment.com');
 define('MAIL_FROM_NAME',  APP_NAME);
 define('MAIL_ENCRYPTION', getenv('MAIL_ENCRYPTION') ?: 'tls');
 
@@ -94,10 +92,8 @@ define('CRYPTO_BTC',        getenv('CRYPTO_BTC') ?: '');
 define('APP_DEBUG', (getenv('APP_DEBUG') === 'false' || getenv('APP_ENV') === 'production') ? false : true);
 define('APP_ENV',   getenv('APP_ENV') ?: 'production');
 
-// ─── Timezone ────────────────────────────────────────────────
 date_default_timezone_set('UTC');
 
-// ─── Error Reporting ────────────────────────────────────────
 if (APP_DEBUG) {
     error_reporting(E_ALL);
     ini_set('display_errors', '1');
