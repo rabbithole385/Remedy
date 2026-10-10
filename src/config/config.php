@@ -39,11 +39,20 @@ if ($dbUrl) {
     }
 } else {
     // 2. Check individual Railway / Docker environment variables
-    $dbHost = getenv('MYSQLHOST') ?: getenv('MYSQL_HOST') ?: getenv('DB_HOST') ?: $dbHost;
-    $dbPort = getenv('MYSQLPORT') ?: getenv('MYSQL_PORT') ?: getenv('DB_PORT') ?: $dbPort;
-    $dbName = getenv('MYSQLDATABASE') ?: getenv('MYSQL_DATABASE') ?: getenv('DB_NAME') ?: $dbName;
-    $dbUser = getenv('MYSQLUSER') ?: getenv('MYSQL_USER') ?: getenv('DB_USER') ?: $dbUser;
-    $dbPass = getenv('MYSQLPASSWORD') ?: getenv('MYSQL_PASSWORD') ?: getenv('DB_PASS') !== false ? (getenv('DB_PASS') ?: '') : $dbPass;
+    $envHost = getenv('MYSQLHOST') ?: getenv('MYSQL_HOST') ?: getenv('DB_HOST');
+    if ($envHost) $dbHost = $envHost;
+
+    $envPort = getenv('MYSQLPORT') ?: getenv('MYSQL_PORT') ?: getenv('DB_PORT');
+    if ($envPort) $dbPort = (string)$envPort;
+
+    $envName = getenv('MYSQLDATABASE') ?: getenv('MYSQL_DATABASE') ?: getenv('DB_NAME');
+    if ($envName) $dbName = $envName;
+
+    $envUser = getenv('MYSQLUSER') ?: getenv('MYSQL_USER') ?: getenv('DB_USER');
+    if ($envUser) $dbUser = $envUser;
+
+    $envPass = getenv('MYSQLPASSWORD') !== false ? getenv('MYSQLPASSWORD') : (getenv('MYSQL_PASSWORD') !== false ? getenv('MYSQL_PASSWORD') : getenv('DB_PASS'));
+    if ($envPass !== false && $envPass !== null) $dbPass = (string)$envPass;
 }
 
 define('DB_HOST',    $dbHost);
