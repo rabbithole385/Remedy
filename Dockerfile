@@ -1,5 +1,9 @@
 FROM php:8.2-apache
 
+# Disable conflicting MPMs and ensure mpm_prefork is active
+RUN a2dismod mpm_event mpm_worker || true \
+    && a2enmod mpm_prefork || true
+
 # Install dependencies and required PHP extensions
 RUN apt-get update && apt-get install -y \
     libpng-dev \
