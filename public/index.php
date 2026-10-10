@@ -57,12 +57,10 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 // Route Dispatch
 switch ($route) {
+    // ── Public Landing Page ──
     case '':
-        if (Auth::check()) {
-            Redirect::to('dashboard');
-        } else {
-            Redirect::to('login');
-        }
+    case 'home':
+        require_once __DIR__ . '/../views/landing/index.php';
         break;
 
     // ── Auth Routes ──
